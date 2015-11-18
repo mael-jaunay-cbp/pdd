@@ -89,6 +89,7 @@ environments {
     test {
         aws {
             credentials {
+                // cf addons de l'organisation dans la console du PAAS
                 accessKey = "A_RECUPERER_CONSOLE_CLEVER"
                 secretKey = "A_RECUPERER_CONSOLE_CLEVER"
             }
