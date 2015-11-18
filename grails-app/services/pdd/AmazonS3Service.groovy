@@ -15,7 +15,6 @@ import static java.util.UUID.randomUUID
 class AmazonS3Service {
 
     def grailsApplication
-    def communicationService
 
     String genererIdentifiant() {
         randomUUID().toString()
@@ -27,7 +26,15 @@ class AmazonS3Service {
                 aws.credentials.accessKey,
                 aws.credentials.secretKey)
 
-        AmazonS3 amazonClient = new AmazonS3Client(credentials, communicationService.clientConfiguration)
+        ClientConfiguration configuration = null;
+
+        configuration = new ClientConfiguration(
+                protocol: Protocol.HTTPS,
+                proxyHost: "127.0.0.1",
+                proxyPort: 9090)
+
+
+        AmazonS3 amazonClient = new AmazonS3Client(credentials, configuration)
         amazonClient.setEndpoint(aws.s3.host)
         amazonClient
     }

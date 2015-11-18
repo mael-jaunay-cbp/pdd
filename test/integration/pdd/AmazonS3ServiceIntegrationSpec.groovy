@@ -74,13 +74,13 @@ class AmazonS3ServiceIntegrationSpec extends IntegrationSpec {
         def key = amazonS3Service.genererIdentifiant()
         File fileToS3 = new ClassPathResource('/pdd/sample.pdf').getFile()
 
-        when: // on créer un fichier et qu'on le sauvegarde sur S3
+        when: // on crÃ©er un fichier et qu'on le sauvegarde sur S3
         PutObjectResult document = amazonS3Service.sauvegarderDocument(key,fileToS3);
 
         then: // alors signature md5 ok et droit restreint
         document.getETag() == DigestUtils.md5Hex(new FileInputStream(fileToS3))
 
-        expect: // quand on le récupère
+        expect: // quand on le rÃ©cupÃ¨re
         amazonS3Service.recupererDocument(key) != null
 
     }
