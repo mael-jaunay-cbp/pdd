@@ -20,7 +20,7 @@ class AmazonS3Service {
         randomUUID().toString()
     }
 
-    AmazonS3Client getClient(){
+    AmazonS3Client getClient() {
         // https://forums.aws.amazon.com/thread.jspa?messageID=561113&#561113
         BasicAWSCredentials credentials = new BasicAWSCredentials(
                 aws.credentials.accessKey,
@@ -28,13 +28,13 @@ class AmazonS3Service {
 
         ClientConfiguration configuration = null;
 
-            configuration = new ClientConfiguration(
-                    protocol: Protocol.HTTPS,
-                    proxyHost: "127.0.0.1",
-                    proxyPort: 9090)
+        configuration = new ClientConfiguration(
+                protocol: Protocol.HTTPS,
+                proxyHost: "127.0.0.1",
+                proxyPort: 9090)
 
 
-        AmazonS3 amazonClient = new AmazonS3Client(credentials,configuration)
+        AmazonS3 amazonClient = new AmazonS3Client(credentials, configuration)
         amazonClient.setEndpoint(aws.s3.host)
         amazonClient
     }
@@ -47,25 +47,25 @@ class AmazonS3Service {
         grailsApplication.config.aws.s3.bucket
     }
 
-    byte[] recupererDocument(String objectKey){
+    byte[] recupererDocument(String objectKey) {
         S3Object object = client.getObject(new GetObjectRequest(bucket, objectKey));
         object.getObjectContent().getBytes()
     }
 
-    void supprimerDocument(String key){
+    void supprimerDocument(String key) {
         client.deleteObject(new DeleteObjectRequest(bucket, key));
     }
 
-    PutObjectResult sauvegarderDocument(String objectKey, File objectDocument){
+    PutObjectResult sauvegarderDocument(String objectKey, File objectDocument) {
         client.putObject(new PutObjectRequest(bucket, objectKey, objectDocument));
     }
 
     /**
      * CrÃ©e la bucket si elle n'existe pas
      */
-    String creerBucketSiInexistante(){
+    String creerBucketSiInexistante() {
         def s3 = getClient()
-        if(!s3.doesBucketExist(bucket)) {
+        if (!s3.doesBucketExist(bucket)) {
             s3.createBucket(bucket)
         }
         bucket
@@ -74,7 +74,7 @@ class AmazonS3Service {
     /**
      * Supprime la bucket et les fichiers si la bucket existe
      */
-    void supprimerBucketSiExiste(){
+    void supprimerBucketSiExiste() {
         def s3 = getClient()
 //        DeleteObjectsRequest multiObjectDeleteRequest = new DeleteObjectsRequest(bucketName);
 //
@@ -85,7 +85,7 @@ class AmazonS3Service {
 //                }
 //        );
 //        client.deleteObjects(multiObjectDeleteRequest)
-        if(s3.doesBucketExist(bucket)) {
+        if (s3.doesBucketExist(bucket)) {
             ObjectListing docs = s3.listObjects(bucket)
             docs.objectSummaries.each {
                 s3.deleteObject(bucket, it.key)
@@ -94,8 +94,8 @@ class AmazonS3Service {
         }
     }
 
-    URL genererUrlTemporaire(String key, Date experitation){
-        def  urlRequest = new GeneratePresignedUrlRequest(bucket, key);
+    URL genererUrlTemporaire(String key, Date experitation) {
+        def urlRequest = new GeneratePresignedUrlRequest(bucket, key);
         urlRequest.setMethod(HttpMethod.GET); // Default.
         urlRequest.setExpiration(experitation);
         client.generatePresignedUrl(urlRequest)
