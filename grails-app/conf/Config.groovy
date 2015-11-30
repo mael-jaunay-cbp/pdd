@@ -89,8 +89,8 @@ environments {
     test {
         aws {
             credentials {
-                accessKey = "A_RECUPERER_CONSOLE_CLEVER"
-                secretKey = "A_RECUPERER_CONSOLE_CLEVER"
+                accessKey = System.getenv().get("PARAU_ACCESSKEY")
+                secretKey = System.getenv().get("PARAU_SECRETKEY")
             }
             s3 {
                 // http://docs.aws.amazon.com/fr_fr/AmazonS3/latest/dev/acl-overview.html
@@ -104,7 +104,6 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
 
