@@ -9,7 +9,7 @@ class CommunicationService {
     def getHttpBuilder(String url) {
         def http = new HTTPBuilder(url)
         if (posteDeDev) {
-            http.setProxy("127.0.0.1", 9090, 'http')
+            http.setProxy("proxy", 9090, 'http')
         }
         http
     }
@@ -19,7 +19,7 @@ class CommunicationService {
             log.debug "client object storage pour poste de dev"
             return new ClientConfiguration(
                     protocol: Protocol.HTTPS,
-                    proxyHost: "localhost",
+                    proxyHost: "proxy",
                     proxyPort: 9090)
         } else {
             return new ClientConfiguration(protocol: Protocol.HTTPS)
